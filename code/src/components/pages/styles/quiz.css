@@ -1,0 +1,66 @@
+.section {
+    background-color: #353935;
+    height: 100vh;
+    width: 100vw;
+    border-radius: 10px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.questionEl {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px black;
+    width: 50vw;
+    height: 100px;
+}
+
+.pStyle {
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    width: 50vw;
+    height: 100px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px black;
+    padding: 10px;
+}
+
+.startBtn {
+    color: black;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px black;
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
