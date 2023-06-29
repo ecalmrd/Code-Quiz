@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import './styles/quiz.css';
+import './styles/Quiz.css';
 
 export default function Quiz() {
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showScore, setShowScore] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0); // New state variable for currentQuestion
+  const [showScore, setShowScore] = useState(false); // New state variable for showScore
+  const [score, setScore] = useState(0); // New state variable for score
+  const [quizStarted, setQuizStarted] = useState(false); // State variable to track quiz start
 
   const questions = [
     {
@@ -64,47 +66,77 @@ export default function Quiz() {
   ];
 
   const handleAnswerButtonClick = (answer) => {
+    // The first line of the function creates a variable to store the index of the next question.
+    // It is calculated by adding 1 to the currentQuestion state variable.
     const nextQuestion = currentQuestion + 1;
+    // The first if statement checks if the selected answer matches the correct answer for the current question. 
+    // It compares the answer parameter with the answer property of the current question object.
+    if (answer === questions[currentQuestion].answer) {
+      setScore(score + 1); // Increment score if the answer is correct
+    }
+    // The second if statement checks if there are more questions to show.
+    // If there are more questions, it updates the currentQuestion state variable to the next question.
+    // This causes the component to re-render and show the next question.
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
+    // The else statement sets the showScore state variable to true using the setShowScore setter function. 
+    // It indicates that the score should be shown instead of the next question.
+    // This causes the component to re-render and show the score instead of the question.
     } else {
       setShowScore(true);
+
     }
   };
 
+  // The handleStartQuiz function sets the quizStarted state variable to true when the Start Quiz button is clicked.
+  // This causes the component to re-render and show the first question.
+  const handleStartQuiz = () => {
+    setQuizStarted(true); 
+  };
+
+  // The handleSubmit function prevents the form from being submitted when the user clicks the Next button.
+  // This prevents the page from refreshing and losing the current question.
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission and page refresh
+    e.preventDefault();
   };
 
   return (
     <div className="section">
-
       <div className="container">
-
-        <div className="question-container">
-          <div className="questionEl">
-            <p className="pStyle"> {questions[currentQuestion].title} </p> </div>
-        </div>
-
-        <form id="answer-buttons" className="formGrid" onSubmit={handleSubmit}>
-          {questions[currentQuestion].choices.map((choice, index) => (
-            <button
-              className="btn"
-              key={index}
-              onClick={() => handleAnswerButtonClick(choice.text)}
-            >
-              {choice.text}
+        {quizStarted ? (
+          <>
+            <div className="question-container">
+              <div className="questionEl">
+                <p className="pStyle">{questions[currentQuestion].title}</p>
+              </div>
+            </div>
+  
+            <form id="answer-buttons" className="formGrid" onSubmit={handleSubmit}>
+              {questions[currentQuestion].choices.map((choice, index) => (
+                <button
+                  className="btn"
+                  key={index}
+                  onClick={() => handleAnswerButtonClick(choice.text)}
+                >
+                  {choice.text}
+                </button>
+              ))}
+            </form>
+          </>
+        ) : (
+          <div className="startBtn">
+            <button className="startBtn" onClick={handleStartQuiz}>
+              Start Quiz
             </button>
-          ))}
-        </form>
+          </div>
+        )}
 
-        <div className="startBtn">
-          {showScore ? (
+        {showScore ? (
+          <div>
             <p>You have completed the quiz!</p>
-          ) : (
-            <button className="startBtn">Start Quiz</button>
-          )}
-        </div>
+            <p>Score: {score}</p>
+          </div>
+        ) : null}
       </div>
     </div>
   );
