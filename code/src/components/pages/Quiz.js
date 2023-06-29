@@ -1,98 +1,111 @@
 import React, { useState } from "react";
+import './styles/quiz.css';
 
 export default function Quiz() {
-  const styles = {
-    body: {
-      backgroundColor: "#353935",
-      height: "100vh",
-      width: "100vw",
-      borderRadius: "10px",
-      margin: "5px",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column"
+
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showScore, setShowScore] = useState(false);
+
+  const questions = [
+    {
+      title: 'Commonly used data types DO NOT include:',
+      choices: [
+        { text: 'strings', answer: false },
+        { text: 'booleans', answer: false },
+        { text: 'alerts', answer: true },
+        { text: 'numbers', answer: false }
+      ],
+      answer: 'alerts',
     },
 
-    container: {
-      display: "flex",
-      padding: "10px",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column"
+    {
+      title: 'The condition in an if / else statement is enclosed within ____.',
+      choices: [
+        { text: 'quotes', answer: false },
+        { text: 'curly brackets', answer: false },
+        { text: 'parentheses', answer: true },
+        { text: 'square brackets', answer: false }
+      ],
+      answer: 'parentheses',
     },
 
-    questionEl: {
-      color: "black",
-      fontSize: "25px",
-      fontWeight: "bold",
-      justifyContent: "center",
-      alignItems: "center",
-      margin: "20px",
-      backgroundColor: "white",
-      borderRadius: "10px",
-      boxShadow: "0 0 10px black",
-      width: "50vw",
-      height: "100px",
+    {
+      title: 'Arrays in JavaScript can be used to store ____.',
+      choices: [
+        { text: 'numbers and strings', correct: false },
+        { text: 'other arrays', correct: false },
+        { text: 'booleans', correct: false },
+        { text: 'all of the above', correct: true },
+      ],
+      answer: 'all of the above',
     },
 
-    pStyle: {
-      color: "black",
-      fontSize: "25px",
-      fontWeight: "bold",
-      justifyContent: "center",
-      alignItems: "center",
-      margin: "20px",
-
+    {
+      title: 'String values must be enclosed within ____ when being assigned to variables.',
+      choices: [
+        { text: 'commas', correct: false },
+        { text: 'curly brackets', correct: false },
+        { text: 'quotes', correct: true },
+        { text: 'parentheses', correct: false },
+      ],
+      answer: 'quotes',
     },
 
-    formGrid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(2, 1fr)",
-      gridGap: "10px",
-      width: "50vw",
-      height: "100px",
-      backgroundColor: "white",
-      borderRadius: "10px",
-      boxShadow: "0 0 10px black",
-      padding: "10px"
+    {
+      title: 'A very useful tool used during development and debugging for printing content to the debugger is:',
+      choices: [
+        { text: 'JavaScript', correct: false },
+        { text: 'terminal / bash', correct: false },
+        { text: 'for loops', correct: false },
+        { text: 'console.log', correct: true },
+      ],
+      answer: 'console.log',
     },
+  ];
 
-    startBtn: {
-      color: "black",
-      margin: "10px",
-      borderRadius: "10px",
-      boxShadow: "0 0 10px black",
-      fontSize: "20px",
-      fontWeight: "bold",
-      justifyContent: "center",
-      alignItems: "center",
-      cursor: "pointer"
-    },
+  const handleAnswerButtonClick = (answer) => {
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setShowScore(true);
+    }
+  };
 
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form submission and page refresh
+  };
+
   return (
-    <div style={styles.body}>
-      {/* Quiz Questions */}
-      <div className="container" style={styles.container}>
+    <div className="section">
+
+      <div className="container">
 
         <div className="question-container">
-          <div className="question" style={styles.questionEl}>
-            <p className ="questions" style={styles.pStyle}> Question </p> </div>
+          <div className="questionEl">
+            <p className="pStyle"> {questions[currentQuestion].title} </p> </div>
         </div>
 
-        <form id="answer-buttons" className="formGrid" style={styles.formGrid}>
-          <button class="btn"> option 1 </button>
-          <button class="btn"> option 2 </button>
-          <button class="btn"> option 3 </button>
-          <button class="btn"> option 4 </button>
+        <form id="answer-buttons" className="formGrid" onSubmit={handleSubmit}>
+          {questions[currentQuestion].choices.map((choice, index) => (
+            <button
+              className="btn"
+              key={index}
+              onClick={() => handleAnswerButtonClick(choice.text)}
+            >
+              {choice.text}
+            </button>
+          ))}
         </form>
 
         <div className="startBtn">
-          <button className="startBtn" style={styles.startBtn}> Start Quiz </button>
+          {showScore ? (
+            <p>You have completed the quiz!</p>
+          ) : (
+            <button className="startBtn">Start Quiz</button>
+          )}
         </div>
       </div>
-
     </div>
-  )
-
+  );
 }
